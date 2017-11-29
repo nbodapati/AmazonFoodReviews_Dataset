@@ -1,3 +1,7 @@
+#In this implementation,each word in the dictionary is indexed by 
+#its frequency of occurence and not its position in the dictionary 
+#as is the case with data.py
+
 import pandas as pd
 import os,sys
 import numpy as np
@@ -37,7 +41,7 @@ class Make_Corpus(MRJob):
 
       def reducer_update_corpus(self,token,values):
           #print(token,values)
-          corpus.append(values)
+          corpus.append(list(values))
           yield ('updated','updated')
 
       def steps(self):
@@ -77,9 +81,8 @@ if __name__ =='__main__':
    start=time.time()
    Make_Dictionary(sys.argv[1]).run()
    print("Time to build dictionary: ",time.time() - start)
-   #pickle the dictionary 
    #write the dictionary to a file
-   print(take(10,data.items()))
+   print(take(100,data.items()))
    Make_Corpus(sys.argv[1]).run() 
    pickle.dump(corpus,open("amazon_text_corpus2.p", "wb" ))    
  
